@@ -66,9 +66,7 @@ MIDDLEWARE = [
 JET_INDEX_DASHBOARD = 'animalesmasquefa.dashboard.CustomIndexDashboard'
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('FRONTEND_URL', '').split(',') if os.environ.get('FRONTEND_URL') else []
 
 ROOT_URLCONF = 'animalesmasquefa.urls'
 
