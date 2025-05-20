@@ -109,7 +109,7 @@ SIMPLE_JWT = {
     "AUTH_COOKIE": "access_token",         # Nombre de la cookie del access token
     "AUTH_COOKIE_REFRESH": "refresh_token",# Nombre de la cookie del refresh token
     "AUTH_COOKIE_SECURE": True,           # True en producción con HTTPS
-    "AUTH_COOKIE_HTTP_ONLY": True,
+    "AUTH_COOKIE_HTTP_ONLY": False,
     "AUTH_COOKIE_PATH": "/",
     "AUTH_COOKIE_SAMESITE": "None",
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
