@@ -73,7 +73,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             value=access,
             httponly=True,
             secure=False,   # En production, True
-            samesite='Lax',
+            samesite='None',
             max_age=3600     # coincide con ACCESS_TOKEN_LIFETIME
         )
         resp.set_cookie(
@@ -81,7 +81,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
             value=refresh,
             httponly=True,
             secure=False,
-            samesite='Lax',
+            samesite='None',
             max_age=86400   # coincide con REFRESH_TOKEN_LIFETIME
         )
         resp.data = {'detail': 'Login exitoso'}
@@ -104,7 +104,7 @@ class CookieTokenRefreshView(TokenRefreshView):
                 value=access_token,
                 httponly=True,
                 secure=False,  # True en producción
-                samesite='Lax',
+                samesite='None',
                 max_age=3600  # 5 minutos, igual que ACCESS_TOKEN_LIFETIME
             )
             # Puedes ocultar el token del body si quieres
