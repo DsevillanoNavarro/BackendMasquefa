@@ -71,16 +71,16 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         resp.set_cookie(
             key='access_token',
             value=access,
-            httponly=True,
-            secure=False,   # En production, True
+            httponly=False,
+            secure=True,   # En production, True
             samesite='None',
             max_age=3600     # coincide con ACCESS_TOKEN_LIFETIME
         )
         resp.set_cookie(
             key='refresh_token',
             value=refresh,
-            httponly=True,
-            secure=False,
+            httponly=False,
+            secure=True,
             samesite='None',
             max_age=86400   # coincide con REFRESH_TOKEN_LIFETIME
         )
@@ -102,8 +102,8 @@ class CookieTokenRefreshView(TokenRefreshView):
             response.set_cookie(
                 key='access_token',
                 value=access_token,
-                httponly=True,
-                secure=False,  # True en producción
+                httponly=False,
+                secure=True,  # True en producción
                 samesite='None',
                 max_age=3600  # 5 minutos, igual que ACCESS_TOKEN_LIFETIME
             )
