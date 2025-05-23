@@ -3,11 +3,18 @@ from jet.dashboard.dashboard import Dashboard
 from django.contrib.auth.models import User
 from django.urls import reverse
 from appmustafa.models import Adopcion, Comentario, Animal, Noticia
+from jet.dashboard.models import UserDashboardModule
+from django.utils import translation
 
+translation.activate('es')
 class CustomIndexDashboard(Dashboard):
     columns = 2
 
     def init_with_context(self, context):
+        
+        user = context['request'].user
+        UserDashboardModule.objects.filter(user=user).delete()
+
         # Helper para el botón estilo custom-btn
         button_html = lambda url, text: (
             f'<a href="{url}" '
@@ -19,6 +26,18 @@ class CustomIndexDashboard(Dashboard):
             f'{text}</a>'
         )
 
+        self.children.append(
+            modules.LinkList(
+                title='⚡ Tareas rápidas',
+                children=[
+                    {'title': 'Añadir Animal', 'url': reverse('admin:appmustafa_animal_add')},
+                    {'title': 'Añadir Noticia', 'url': reverse('admin:appmustafa_noticia_add')},
+                    {'title': 'Añadir Comentario', 'url': reverse('admin:appmustafa_comentario_add')},
+                    {'title': 'Añadir Adopción', 'url': reverse('admin:appmustafa_adopcion_add')},
+                ],
+            )
+        )
+        
         # 1. Adopciones recientes (últimas 10 enlaces)
         adopciones = Adopcion.objects.order_by('-fecha_hora')[:10]
         self.children.append(
@@ -134,15 +153,5 @@ class CustomIndexDashboard(Dashboard):
         )
 
         # 9. Tareas rápidas
-        self.children.append(
-            modules.LinkList(
-                title='⚡ Tareas rápidas',
-                children=[
-                    {'title': 'Añadir Animal', 'url': reverse('admin:appmustafa_animal_add')},
-                    {'title': 'Añadir Noticia', 'url': reverse('admin:appmustafa_noticia_add')},
-                    {'title': 'Añadir Comentario', 'url': reverse('admin:appmustafa_comentario_add')},
-                    {'title': 'Añadir Adopción', 'url': reverse('admin:appmustafa_adopcion_add')},
-                ],
-            )
-        )
+        
         

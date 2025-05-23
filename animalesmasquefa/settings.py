@@ -15,12 +15,12 @@ import os
 import dj_database_url
 from datetime import timedelta
 from dotenv import load_dotenv  
+from django.utils.translation import gettext_lazy as _
 
 load_dotenv()  
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-print(BASE_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.locale.LocaleMiddleware', 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
@@ -69,6 +70,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = os.environ.get('FRONTEND_URL', '').split(',') if os.environ.get('FRONTEND_URL') else []
 
 ROOT_URLCONF = 'animalesmasquefa.urls'
+
+JET_DASHBOARD_ENABLE_PERSISTENT = False
 
 TEMPLATES = [
     {
@@ -118,7 +121,7 @@ SIMPLE_JWT = {
 
 SESSION_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SAMESITE    = "None"
-
+JET_DASHBOARD_CACHE_TIMEOUT = 0
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -141,13 +144,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'  # Idioma por defecto en español
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'  # O tu zona horaria
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
+# Si quieres permitir varios idiomas (opcional)
+
+
+LANGUAGES = [
+    ('es', _('Español')),
+    ('en', _('Inglés')),
+]
 
 
 # Static files (CSS, JavaScript, Images)
