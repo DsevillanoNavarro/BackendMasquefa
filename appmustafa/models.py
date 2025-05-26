@@ -1,11 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import date
 from django.core.exceptions import ValidationError
 from auditlog.registry import auditlog
-
-
+from django.contrib.auth.models import AbstractUser  # ✅ esto sí debe quedarse
+from django.conf import settings  # ✅ para ForeignKey con AUTH_USER_MODEL
 
 class Animal(models.Model):
     nombre = models.CharField(max_length=50)
@@ -21,6 +20,10 @@ class Animal(models.Model):
     def __str__(self):
         return self.nombre
 
+    def clean(self):
+        if self.fecha_nacimiento > date.today():
+            raise ValidationError("La fecha de nacimiento no puede ser en el futuro.")
+    
     def calcular_edad(self):
         if self.fecha_nacimiento:
             today = date.today()
@@ -33,6 +36,7 @@ class Animal(models.Model):
     def save(self, *args, **kwargs):
         self.edad = self.calcular_edad()
         super().save(*args, **kwargs)
+        
 
 
 class Noticia(models.Model):
@@ -51,16 +55,18 @@ class Noticia(models.Model):
 
 class Comentario(models.Model):
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE, related_name="comentarios")
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comentarios")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comentarios")
     contenido = models.TextField(max_length=1000)
     fecha_hora = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='respuestas')
+
 
     class Meta:
         verbose_name = 'Comentario'
         verbose_name_plural = 'Comentarios'
 
     def __str__(self):
-        return self.contenido[:50]
+        return f'{self.usuario.username} - {self.contenido[:20]}'
 
     def tiempo_transcurrido(self):
         delta = timezone.now() - self.fecha_hora
@@ -95,7 +101,7 @@ class Adopcion(models.Model):
     ]
 
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name="adopciones")
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="adopciones")
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="adopciones")
     fecha_hora = models.DateTimeField(auto_now_add=True)
     aceptada = models.CharField(max_length=10, choices=ESTADOS_ADOPCION, default='Pendiente')
     contenido = models.FileField(upload_to=pdf_upload_path, validators=[validate_pdf])
@@ -106,7 +112,24 @@ class Adopcion(models.Model):
 
     def __str__(self):
         return self.animal.nombre
+    
+    def clean(self):
+        # No permitir múltiples adopciones aceptadas para un animal
+        if self.aceptada == 'Aceptada':
+            if Adopcion.objects.filter(animal=self.animal, aceptada='Aceptada').exclude(id=self.id).exists():
+                raise ValidationError("Este animal ya fue adoptado.")
 
+        # No permitir más de una solicitud por el mismo usuario al mismo animal
+        if Adopcion.objects.filter(animal=self.animal, usuario=self.usuario).exclude(id=self.id).exists():
+            raise ValidationError("Ya has enviado una solicitud para adoptar a este animal.")
+
+
+class CustomUser(AbstractUser):
+    foto_perfil = models.ImageField(upload_to='usuarios/perfiles/', null=True, blank=True)
+    recibir_novedades = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
 
 # ——— Después de definir **todas** tus clases, las registras: ———
 auditlog.register(Animal)

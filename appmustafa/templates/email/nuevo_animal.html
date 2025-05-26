@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuevo Animal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body style="font-family: 'Poppins', sans-serif; background-color: #f4f4f4; padding: 20px; margin: 0;">
+  <div style="background-color: #fff; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="font-family: 'Afacad', sans-serif; color: #4170E8; font-size: 32px; margin-bottom: 10px;">🐾 ¡Nuevo animal en adopción!</h2>
+
+    <p style="font-size: 16px; color: #333;">Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+    <p style="font-size: 16px; color: #333;">Hemos añadido a <strong>{{ animal.nombre }}</strong> a nuestro refugio.</p>
+
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="{{ animal_url }}">
+        <img src="cid:imagen_animal" alt="Imagen de {{ animal.nombre }}" style="max-width: 100%; height: auto; border-radius: 12px;">
+      </a>
+    </div>
+
+    <div style="text-align: center;">
+      <a href="{{ animal_url }}" style="display: inline-block; font-family: 'Poppins', sans-serif; font-weight: 900; font-size: 18px; padding: 15px 30px; background-color: #4170E8; color: white; text-decoration: none; border-radius: 0; transition: background-color 0.3s ease;">
+        Ver a {{ animal.nombre }}
+      </a>
+    </div>
+  </div>
+</body>
+</html>

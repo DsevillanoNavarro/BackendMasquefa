@@ -3,7 +3,6 @@ from .models import Animal, Noticia, Comentario, Adopcion
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .serializers import AnimalSerializer, UsuarioSerializer, NoticiaSerializer, ComentarioSerializer, AdopcionSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
-from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import permissions
@@ -21,6 +20,14 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str  # force_str para decode en Django 4+
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
+from .throttles import CrearComentarioThrottle
+from .throttles import UserRateThrottle, CrearAdopcionThrottle
+from rest_framework.exceptions import Throttled
+
+User = get_user_model()
+token_generator = PasswordResetTokenGenerator()
+
 
 class AnimalViewSet(viewsets.ModelViewSet):
     queryset = Animal.objects.all()
@@ -34,6 +41,11 @@ class ComentarioViewSet(viewsets.ModelViewSet):
     queryset = Comentario.objects.all()
     serializer_class = ComentarioSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def get_throttles(self):
+        if self.request.method == 'POST':
+            return [CrearComentarioThrottle()]
+        return []  # sin throttling para GET
 
     def get_queryset(self):
         noticia_id = self.request.query_params.get('noticia')
@@ -49,10 +61,39 @@ class AdopcionViewSet(viewsets.ModelViewSet):
     queryset = Adopcion.objects.all()
     serializer_class = AdopcionSerializer
 
+    def get_throttles(self):
+        if self.request.method == 'POST':
+            return [CrearAdopcionThrottle()]
+        return super().get_throttles()
 
-class AdopcionViewSet(viewsets.ModelViewSet):
-    queryset = Adopcion.objects.all()
-    serializer_class = AdopcionSerializer
+    def throttled(self, request, wait):
+        hours = wait // 3600
+        minutes = (wait % 3600) // 60
+        seconds = int(wait % 60)
+
+        if hours > 0:
+            time_str = f"{int(hours)}h {int(minutes)}min"
+        elif minutes > 0:
+            time_str = f"{int(minutes)}min {int(seconds)}s"
+        else:
+            time_str = f"{seconds}s"
+
+        raise Throttled(detail={
+            'message': f'Has alcanzado el límite de solicitudes de adopción. Inténtalo de nuevo en {time_str}.'
+        })
+
+
+    def perform_create(self, serializer):
+        animal = serializer.validated_data.get('animal')
+        usuario = self.request.user
+
+        if Adopcion.objects.filter(animal=animal, usuario=usuario).exists():
+            raise PermissionDenied("Ya has solicitado adoptar este animal antes.")
+
+        if serializer.validated_data.get('usuario') != usuario:
+            raise PermissionDenied("No puedes crear una adopción en nombre de otro usuario.")
+
+        serializer.save()
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -129,14 +170,13 @@ class ProfileView(APIView):
         return Response(serializer.data)
     
     
-    
-    
-User = get_user_model()
-token_generator = PasswordResetTokenGenerator()
+
+
 
 class RequestPasswordResetAPIView(generics.GenericAPIView):
+    throttle_classes = [UserRateThrottle]
     permission_classes = []
-    serializer_class = PasswordResetRequestSerializer
+    serializer_class = PasswordResetRequestSerializer    
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -153,7 +193,7 @@ class RequestPasswordResetAPIView(generics.GenericAPIView):
         token = token_generator.make_token(user)
 
         frontend_url = settings.FRONTEND_URL.rstrip('/')
-        reset_link = f"{frontend_url}/reset-password/{uidb64}/{token}/"
+        reset_link = f"{frontend_url}/resetPassword/{uidb64}/{token}/"
 
         send_mail(
             subject="Recupera tu contraseña",
@@ -188,3 +228,10 @@ class PasswordResetConfirmAPIView(generics.GenericAPIView):
         user.set_password(new_password)
         user.save()
         return Response({"detail": "Contraseña restablecida con éxito."}, status=200)
+    
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Logged out"})
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        return response

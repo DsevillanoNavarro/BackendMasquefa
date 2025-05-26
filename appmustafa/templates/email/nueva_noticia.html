@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nueva Noticia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f9fafc;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      font-family: 'Afacad', sans-serif;
+      font-size: 26px;
+      color: #4170E8;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+
+    .image-wrapper {
+      text-align: center;
+      margin: 28px 0;
+    }
+
+    .noticia-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .btn-wrapper {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #4170E8;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 12px 24px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #2d50b4;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      color: #999;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📰 ¡Nueva noticia publicada!</h2>
+    <p>Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+    <p>Tenemos una nueva noticia: <strong>{{ noticia.titulo }}</strong>.</p>
+
+    <div class="image-wrapper">
+      <img src="cid:imagen_noticia" alt="Imagen de la noticia {{ noticia.titulo }}" class="noticia-image">
+    </div>
+
+    <p style="text-align: center; margin-top: 30px;">Descúbrela aquí:</p>
+
+    <div class="btn-wrapper">
+      <a href="{{ noticia_url }}" class="btn">Leer noticia completa</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Refugio de animales · Siempre contigo para mantenerte informado 🐾
+  </div>
+</body>
+</html>

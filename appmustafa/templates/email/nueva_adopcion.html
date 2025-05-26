@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nueva solicitud de adopción</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8fafc;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      background-color: #fff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      margin: auto;
+    }
+    h1 {
+      color: #4170E8;
+      font-family: 'Afacad', sans-serif;
+      font-size: 24px;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+    .footer {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐾 Nueva solicitud de adopción</h1>
+    <p><strong>{{ usuario.username }}</strong> ha solicitado adoptar a <strong>{{ animal.nombre }}</strong>.</p>
+    <p>Fecha de solicitud: {{ fecha }}</p>
+
+    <div class="footer">
+      — Sistema de AnimalesMasquefa
+    </div>
+  </div>
+</body>
+</html>

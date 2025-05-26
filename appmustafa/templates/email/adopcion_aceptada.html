@@ -2,41 +2,79 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <title>Adopción aceptada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f7f7f7;
-      padding: 20px;
+      background-color: #f7f9fc;
+      margin: 0;
+      padding: 40px 20px;
       color: #333;
     }
+
     .container {
       background-color: #fff;
-      border-radius: 8px;
-      padding: 30px;
+      border-radius: 12px;
+      padding: 32px;
       max-width: 600px;
       margin: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
     }
+
     h1 {
       color: #4170E8;
+      font-family: 'Afacad', sans-serif;
+      font-size: 26px;
+      margin-bottom: 20px;
     }
+
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .image-wrapper {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .animal-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
     .footer {
-      font-size: 14px;
+      font-size: 13px;
       color: #777;
+      text-align: center;
       margin-top: 30px;
+    }
+
+    .footer a {
+      color: #4170E8;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>¡Tu adopción ha sido aceptada! 🐾</h1>
-    <p>Hola {{ usuario.username }},</p>
+    <p>Hola <strong>{{ usuario.username }}</strong>,</p>
     <p>¡Enhorabuena! Tu solicitud de adopción para <strong>{{ animal }}</strong> ha sido aceptada.</p>
+
+    <div class="image-wrapper">
+      <img src="cid:imagen_url" alt="Imagen de {{ animal }}" class="animal-image">
+    </div>
+
     <p>Nos pondremos en contacto contigo lo antes posible para continuar con el proceso.</p>
     <p>Gracias por confiar en <strong>AnimalesMasquefa</strong> y dar una segunda oportunidad a uno de nuestros animales.</p>
+
     <div class="footer">
       — El equipo de AnimalesMasquefa<br>
-      <a href="{{ frontend_url }}" style="color: #4170E8;">Ir a la web</a>
+      <a href="{{ frontend_url }}">Ir a la web</a>
     </div>
   </div>
 </body>

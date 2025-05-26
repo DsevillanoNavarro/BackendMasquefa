@@ -64,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
+
+AUTH_USER_MODEL = 'appmustafa.CustomUser'
 JET_INDEX_DASHBOARD = 'animalesmasquefa.dashboard.CustomIndexDashboard'
 
 CORS_ALLOW_CREDENTIALS = True
@@ -106,6 +108,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'appmustafa.authentication.CookieJWTAuthentication',
     ),
+        'DEFAULT_THROTTLE_RATES': {
+            'comentario_creacion': '1/min',
+            'adopcion_creacion': '3/day',
+            'login': '1/min',
+            'user': '1/hour', 
+    }
 }
 
 SIMPLE_JWT = {
@@ -119,8 +127,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-SESSION_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SAMESITE    = "None"
+#SESSION_COOKIE_SAMESITE = "None"
+#CSRF_COOKIE_SAMESITE    = "None"
 JET_DASHBOARD_CACHE_TIMEOUT = 0
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -184,3 +192,5 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+BACKEND_URL = os.environ.get('BACKEND_URL')

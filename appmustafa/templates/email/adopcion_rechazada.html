@@ -2,36 +2,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <title>Adopción no seleccionada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f0f4f8;
-      padding: 20px;
+      background-color: #f8fafc;
+      margin: 0;
+      padding: 40px 20px;
       color: #333;
     }
+
     .container {
-      background-color: #fff;
+      background-color: #ffffff;
       border-radius: 12px;
-      padding: 30px;
+      padding: 32px;
       max-width: 600px;
       margin: auto;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     }
+
     h1 {
       color: #D9534F;
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-family: 'Afacad', sans-serif;
     }
-    .animal-img {
-      width: 100%;
-      max-height: 300px;
+
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .image-wrapper {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .animal-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
       object-fit: cover;
-      border-radius: 8px;
-      margin: 20px 0;
     }
+
     .footer {
       font-size: 13px;
       color: #777;
-      margin-top: 40px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    a {
+      color: #4170E8;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -40,9 +65,16 @@
     <h1>Tu solicitud no ha sido seleccionada 😿</h1>
     <p>Hola <strong>{{ usuario.username }}</strong>,</p>
     <p>Lamentamos informarte que la solicitud de adopción para <strong>{{ animal }}</strong> ha sido asignada a otra persona.</p>
-    <p>Valoramos mucho tu interés y te animamos a seguir mirando otros animales que están buscando familia.</p>
+
+    <div class="image-wrapper">
+      <img src="cid:imagen_url" alt="Imagen de {{ animal }}" class="animal-image">
+    </div>
+
+    <p>Valoramos mucho tu interés y te animamos a seguir mirando otros animales que buscan una familia amorosa.</p>
+
     <div class="footer">
-      — El equipo de AnimalesMasquefa
+      — El equipo de AnimalesMasquefa<br>
+      <a href="{{ frontend_url }}">Ir a la web</a>
     </div>
   </div>
 </body>
