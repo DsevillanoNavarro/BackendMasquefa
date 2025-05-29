@@ -24,6 +24,8 @@ from django.contrib.auth import get_user_model
 from .throttles import CrearComentarioThrottle
 from .throttles import UserRateThrottle, CrearAdopcionThrottle
 from rest_framework.exceptions import Throttled
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
 User = get_user_model()
 token_generator = PasswordResetTokenGenerator()
@@ -235,3 +237,30 @@ class LogoutView(APIView):
         response.delete_cookie('access_token')
         response.delete_cookie('refresh_token')
         return response
+    
+@api_view(['POST'])
+def contacto_view(request):
+    nombre = request.data.get('nombre')
+    email = request.data.get('email')
+    asunto = request.data.get('asunto')
+    mensaje = request.data.get('mensaje')
+
+    context = {
+        'nombre': nombre,
+        'email': email,
+        'asunto': asunto,
+        'mensaje': mensaje,
+    }
+
+    html_content = render_to_string('email/contacto_recibido.html', context)
+
+    email_message = EmailMultiAlternatives(
+        subject=f"[Contacto Web] {asunto}",
+        body=mensaje,  # Texto plano como respaldo
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[settings.DEFAULT_FROM_EMAIL]
+    )
+    email_message.attach_alternative(html_content, "text/html")
+    email_message.send()
+
+    return Response({"mensaje": "Correo enviado correctamente"})

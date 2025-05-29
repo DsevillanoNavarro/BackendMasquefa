@@ -3,8 +3,29 @@ from django.utils import timezone
 from datetime import date
 from django.core.exceptions import ValidationError
 from auditlog.registry import auditlog
-from django.contrib.auth.models import AbstractUser  # ✅ esto sí debe quedarse
-from django.conf import settings  # ✅ para ForeignKey con AUTH_USER_MODEL
+from django.contrib.auth.models import AbstractUser 
+from django.conf import settings  
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+
+def compress_image(image):
+    img = Image.open(image)
+    img = img.convert('RGB') 
+    img.thumbnail((1024, 1024)) 
+    buffer = BytesIO()
+    img.save(buffer, format='JPEG', quality=80) 
+
+    return ContentFile(buffer.getvalue(), name=image.name)
+
+# Ejemplo dentro de save():
+def save(self, *args, **kwargs):
+    if self.imagen:
+        self.imagen = compress_image(self.imagen)
+    super().save(*args, **kwargs)
+
+
+
 
 class Animal(models.Model):
     nombre = models.CharField(max_length=50)
@@ -130,7 +151,7 @@ class Adopcion(models.Model):
 
 
 class CustomUser(AbstractUser):
-    foto_perfil = models.ImageField(upload_to='usuarios/perfiles/', null=True, blank=True)
+    foto_perfil = models.ImageField(upload_to='usuarios/perfiles/', null=True, blank=True, default='usuarios/default.jpg')
     recibir_novedades = models.BooleanField(default=False)
 
     def __str__(self):
