@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Clave secreta para la instancia de Django (nunca exponer en producción)
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
 # Habilitar/deshabilitar modo debug (True para desarrollo, False en producción)
-DEBUG = os.environ.get('DEBUG')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 
 # Hosts permitidos para el despliegue
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
