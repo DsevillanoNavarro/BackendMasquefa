@@ -24,14 +24,14 @@ class Animal(models.Model):
     edad = models.PositiveIntegerField(editable=False, null=True, blank=True)  # Edad calculada automáticamente
     situacion = models.TextField(max_length=750)  # Descripción o situación actual del animal
     # Imagen en Cloudinary
-    imagen = CloudinaryField('imagen', folder='animales')
+    imagen = CloudinaryField('imagen', folder='animales', default='pexels-leonardo-de-oliveira-872270-1770918_yp2wtl', blank=False, null=False)
 
     class Meta:
         verbose_name = 'Animal'
         verbose_name_plural = 'Animales'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre or "Animal sin nombre"
 
     # Validación para asegurar que la fecha de nacimiento no sea futura
     def clean(self):
@@ -60,7 +60,7 @@ class Animal(models.Model):
 class Noticia(models.Model):
     titulo = models.CharField(max_length=100)              # Título de la noticia
     # Imagen en Cloudinary
-    imagen = CloudinaryField('imagen', folder='noticias')  # Imagen relacionada
+    imagen = CloudinaryField('imagen', folder='noticias', default='pexels-bekka419-804475_gpv7j8')  # Imagen relacionada
     contenido = models.TextField(max_length=1000)          # Texto de la noticia
     fecha_publicacion = models.DateField()                 # Fecha de publicación
 
@@ -69,7 +69,7 @@ class Noticia(models.Model):
         verbose_name_plural = 'Noticias'
 
     def __str__(self):
-        return self.titulo
+        return self.titulo or "Noticia sin título"
 
 
 # ==============================
@@ -171,8 +171,9 @@ class CustomUser(AbstractUser):
     foto_perfil = CloudinaryField(
         'foto_perfil',
         folder='usuarios/perfiles',
-        default='usuarios/perfiles/default.jpg', 
-        blank=True
+        default='default_as1n2l', 
+        blank=False, 
+        null=False
         )
     recibir_novedades = models.BooleanField(default=False)  # Boletín de novedades, etc.
 
@@ -180,8 +181,8 @@ class CustomUser(AbstractUser):
         return self.username
 
 # Registro para auditoría si se utiliza auditlog
-auditlog.register(Animal)
-auditlog.register(Noticia)
+auditlog.register(Animal, exclude_fields=['imagen'])
+auditlog.register(Noticia, exclude_fields=['imagen'])
 auditlog.register(Comentario)
-auditlog.register(Adopcion)
-auditlog.register(CustomUser)
+auditlog.register(Adopcion, exclude_fields=['contenido'])
+auditlog.register(CustomUser, exclude_fields=['foto_perfil'])

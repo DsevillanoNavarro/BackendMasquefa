@@ -8,6 +8,9 @@ import cloudinary.uploader
 
 User = get_user_model()
 
+DEFAULT_IMAGEN_ANIMAL = 'pexels-leonardo-de-oliveira-872270-1770918_yp2wtl'
+DEFAULT_IMAGEN_USUARIO = 'default_wtx8r7'
+DEFAULT_IMAGEN_NOTICIA = 'pexels-bekka419-804475_gpv7j8'
 
 # -----------------------------
 # MANEJO DE ARCHIVOS OBSOLETOS
@@ -24,7 +27,9 @@ def borrar_imagen_anterior_animal(sender, instance, **kwargs):
 
     # Si cambió la imagen (el public_id cambia cuando sube la nueva)
     if anterior.imagen and anterior.imagen.public_id != getattr(instance.imagen, 'public_id', None):
-        cloudinary.uploader.destroy(anterior.imagen.public_id, invalidate=True)
+        if anterior.imagen.public_id != DEFAULT_IMAGEN_ANIMAL:
+            cloudinary.uploader.destroy(anterior.imagen.public_id, invalidate=True)
+
 
 
 @receiver(pre_save, sender=User)
@@ -37,7 +42,8 @@ def borrar_foto_anterior_usuario(sender, instance, **kwargs):
         return
 
     if anterior.foto_perfil and anterior.foto_perfil.public_id != getattr(instance.foto_perfil, 'public_id', None):
-        cloudinary.uploader.destroy(anterior.foto_perfil.public_id, invalidate=True)
+        if anterior.foto_perfil.public_id != DEFAULT_IMAGEN_USUARIO:
+            cloudinary.uploader.destroy(anterior.foto_perfil.public_id, invalidate=True)
 
 
 @receiver(pre_save, sender=Adopcion)
@@ -62,14 +68,19 @@ def borrar_pdf_anterior_adopcion(sender, instance, **kwargs):
 # ----------------------------
 @receiver(post_delete, sender=Animal)
 def eliminar_imagen_animal(sender, instance, **kwargs):
-    if instance.imagen:
+    if instance.imagen and instance.imagen.public_id != DEFAULT_IMAGEN_ANIMAL:
         cloudinary.uploader.destroy(instance.imagen.public_id, invalidate=True)
 
 
 @receiver(post_delete, sender=User)
 def eliminar_imagen_usuario(sender, instance, **kwargs):
-    if instance.foto_perfil:
+    if instance.foto_perfil and instance.foto_perfil.public_id != DEFAULT_IMAGEN_USUARIO:
         cloudinary.uploader.destroy(instance.foto_perfil.public_id, invalidate=True)
+
+@receiver(post_delete, sender=Noticia)
+def eliminar_imagen_noticia(sender, instance, **kwargs):
+    if instance.imagen and instance.imagen.public_id != DEFAULT_IMAGEN_NOTICIA:
+        cloudinary.uploader.destroy(instance.imagen.public_id, invalidate=True)
 
 
 @receiver(post_delete, sender=Adopcion)
