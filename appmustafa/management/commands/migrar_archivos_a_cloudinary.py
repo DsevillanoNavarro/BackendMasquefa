@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.core.files.storage import FileSystemStorage
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from django.core.files.base import ContentFile
+from django.core.files import File  # ¡IMPORTANTE!
 from django.conf import settings
 from pathlib import Path
 from appmustafa.models import CustomUser, Animal, Noticia, Adopcion
@@ -40,12 +41,16 @@ class Command(BaseCommand):
                         with local_storage.open(ruta_relativa, 'rb') as f:
                             content = ContentFile(f.read())
 
-                        # Subida manual a Cloudinary
-                        nuevo_path = cloudinary_storage.save(os.path.basename(ruta_relativa), content)
-                        setattr(obj, campo, nuevo_path)
+                        # Subida a Cloudinary y reapertura como archivo
+                        nombre_archivo = os.path.basename(ruta_relativa)
+                        nuevo_nombre = cloudinary_storage.save(nombre_archivo, content)
+                        archivo_cloudinary = cloudinary_storage.open(nuevo_nombre)
+
+                        # Guardar en el campo como archivo completo (File)
+                        setattr(obj, campo, File(archivo_cloudinary, name=nuevo_nombre))
                         obj.save()
 
-                        # Verificación visual
+                        # Mostrar URL Cloudinary final
                         nuevo_archivo = getattr(obj, campo)
                         self.stdout.write(self.style.SUCCESS(f"✅ Migrado a Cloudinary: {nuevo_archivo.url}"))
 
