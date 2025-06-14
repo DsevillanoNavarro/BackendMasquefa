@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',  # Autenticación vía JWT
     'auditlog',  # Auditoría de cambios en modelos
     'drf_yasg',  # Documentación Swagger para la API
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 # ----------------------- Middleware -----------------------
@@ -192,8 +194,13 @@ STATIC_URL = 'static/'  # URL para archivos estáticos
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'  # Tipo de ID por defecto
 
-MEDIA_URL = '/media/'  # URL para archivos multimedia (subidos por usuarios)
-MEDIA_ROOT = BASE_DIR / 'media'  # Ruta física para archivos multimedia
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+}
 
 # ----------------------- Correo electrónico -----------------------
 

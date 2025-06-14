@@ -58,10 +58,3 @@ urlpatterns = [
     path('redoc/', admin_required(schema_view.with_ui('redoc', cache_timeout=0)), name='schema-redoc'),
     
 ] 
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# 👉 Esta línea permite servir imágenes incluso en producción si no hay Nginx
-else:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

@@ -10,20 +10,6 @@ from PIL import Image  # Pillow, para procesar imágenes
 from io import BytesIO
 from django.core.files.base import ContentFile  # Para crear archivos desde memoria
 
-# Función para comprimir imágenes antes de guardarlas
-def compress_image(image):
-    img = Image.open(image)               # Abre la imagen
-    img = img.convert('RGB')              # Convierte a RGB (evita errores con PNGs con transparencia)
-    img.thumbnail((1024, 1024))           # Redimensiona manteniendo proporción, máximo 1024px
-    buffer = BytesIO()                    # Crea un buffer de memoria
-    img.save(buffer, format='JPEG', quality=80)  # Guarda en el buffer como JPEG de calidad media
-    return ContentFile(buffer.getvalue(), name=image.name)  # Retorna el archivo listo para guardar
-
-# Ejemplo de uso dentro de un modelo con atributo `imagen`
-def save(self, *args, **kwargs):
-    if self.imagen:
-        self.imagen = compress_image(self.imagen)  # Comprime la imagen antes de guardar
-    super().save(*args, **kwargs)
 
 
 # ==============================
