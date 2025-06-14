@@ -51,8 +51,6 @@ htmlcov/
 staticfiles/
 static/
 
-# Archivos subidos por usuarios (si no se versionan)
-media/
 
 # Archivos de Gunicorn o despliegue
 *.pid
