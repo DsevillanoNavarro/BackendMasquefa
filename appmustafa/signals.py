@@ -101,15 +101,15 @@ def gestionar_estado_adopcion(sender, instance, created, **kwargs):
     animal = instance.animal
 
     imagen_url = (
-        f"{settings.CLOUDINARY_BASE_URL}{animal.imagen.public_id}.{animal.imagen.format}"
+        f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
         if hasattr(animal.imagen, 'public_id') else
         f"{settings.CLOUDINARY_BASE_URL}${DEFAULT_IMAGEN_ANIMAL}.jpg"
     )
 
     imagen_path = (
-        f"{settings.CLOUDINARY_BASE_URL}{animal.imagen.public_id}.{animal.imagen.format}"
+        f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
         if hasattr(animal.imagen, 'public_id') else
-        f"{settings.CLOUDINARY_BASE_URL}${DEFAULT_IMAGEN_ANIMAL}.jpg"
+        f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_ANIMAL}.jpg"
     )
 
 
@@ -171,7 +171,7 @@ def notificar_nuevo_animal(sender, instance, created, **kwargs):
         usuarios = User.objects.filter(recibir_novedades=True)
 
         imagen_url = (
-            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.{instance.imagen.format}"
+            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
             if hasattr(instance.imagen, 'public_id') else
             f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_ANIMAL}.jpg"
         )
@@ -200,7 +200,7 @@ def notificar_nueva_noticia(sender, instance, created, **kwargs):
         usuarios = User.objects.filter(recibir_novedades=True)
 
         imagen_url = (
-            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.{instance.imagen.format}"
+            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
             if hasattr(instance.imagen, 'public_id') else
             f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_NOTICIA}.jpg"
         )
