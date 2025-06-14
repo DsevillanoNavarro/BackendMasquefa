@@ -47,11 +47,6 @@ htmlcov/
 *~
 *.bak
 
-# Archivos estáticos recolectados
-staticfiles/
-static/
-
-
 # Archivos de Gunicorn o despliegue
 *.pid
 
