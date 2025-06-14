@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Adopción no seleccionada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8fafc;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 650px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      color: #D9534F;
+      font-size: 28px;
+      margin-bottom: 16px;
+      font-family: 'Afacad', sans-serif;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.7;
+      margin: 14px 0;
+    }
+
+    .image-wrapper {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .animal-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .footer {
+      font-size: 14px;
+      color: #888;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .footer a {
+      color: #4170E8;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tu solicitud no ha sido seleccionada 😿</h1>
+
+    <p>Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+    <p>Lamentamos informarte que la solicitud de adopción para <strong>{{ animal.nombre }}</strong> ha sido asignada a otra persona.</p>
+
+    <div class="image-wrapper">
+      <img src="cid:imagen_animal" alt="Imagen de {{ animal.nombre }}" class="animal-image">
+    </div>
+
+    <p>Sabemos que esto puede ser decepcionante, pero queremos agradecerte de corazón por querer darle una oportunidad a uno de nuestros animales. 🐾</p>
+
+    <p>Aún hay muchos peludos esperando una segunda oportunidad. Te invitamos a seguir explorando en nuestra web y encontrar a tu compañero ideal.</p>
+  </div>
+
+  <div class="footer">
+    — El equipo de Animalistes Masquefa<br>
+    <a href="https://animalistesmasquefa.netlify.app/" style="color: #4170E8; text-decoration: none;">🌐 Visita nuestra web</a> | 
+    <a href="https://animalistesmasquefa.netlify.app/contacto" style="color: #4170E8; text-decoration: none;">✉️ Contáctanos</a>
+  </div>
+</body>
+</html>

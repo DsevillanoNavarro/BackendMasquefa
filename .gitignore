@@ -1,0 +1,62 @@
+# Entorno virtual
+venv/
+ENV/
+env/
+.venv/
+
+# Archivos de configuración de entorno
+*.env
+*.env.*
+!.env.example
+
+# Llaves JWT (reemplaza si usas otras rutas)
+private.key
+public.key
+
+# Archivos de bases de datos locales (SQLite, si alguna vez lo usas)
+*.sqlite3
+
+# Archivos compilados de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Archivos de migración generados (opcional, si no quieres versionarlos)
+# **¡ATENCIÓN!** Normalmente SÍ se suben.
+# app*/migrations/*.py
+# app*/migrations/*.pyc
+
+# Archivos de cache, coverage y testing
+*.cover
+*.coverage
+.cache
+.tox/
+.nox/
+.coverage.*
+htmlcov/
+.coverage
+
+# Archivos de editor y sistema operativo
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+*.bak
+
+# Archivos estáticos recolectados
+staticfiles/
+static/
+
+# Archivos subidos por usuarios (si no se versionan)
+media/
+
+# Archivos de Gunicorn o despliegue
+*.pid
+
+# Configs de Netlify/Vercel si no quieres subirlos desde backend
+netlify.toml
+vercel.json

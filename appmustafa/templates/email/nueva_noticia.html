@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>📰 Nueva Noticia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f9fafc;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      font-family: 'Afacad', sans-serif;
+      font-size: 30px;
+      color: #4170E8;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.7;
+      margin: 14px 0;
+    }
+
+    .image-wrapper {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .noticia-image {
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .btn-wrapper {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .btn {
+      background-color: #4170E8;
+      color: #fff !important;
+      font-weight: 900;
+      font-size: 16px;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 8px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #2d50b4;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-top: 40px;
+    }
+
+    .footer a {
+      color: #4170E8;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📰 ¡Nueva noticia en el refugio!</h2>
+    
+    <p>Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+    <p>Acabamos de publicar una nueva noticia que podría interesarte: <strong>{{ noticia.titulo }}</strong>.</p>
+
+    <div class="image-wrapper">
+      <img src="cid:imagen_noticia" alt="Imagen de la noticia {{ noticia.titulo }}" class="noticia-image">
+    </div>
+
+    <p style="text-align: center;">Haz clic a continuación para leer más:</p>
+
+    <div class="btn-wrapper">
+      <a href="{{ noticia_url }}" class="btn">📖 Leer noticia completa</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Gracias por seguir apoyando a nuestros peludos.  
+    <br>
+    <a href="https://animalistesmasquefa.netlify.app/" style="color: #4170E8; text-decoration: none;">🌐 Visita nuestra web</a> | 
+    <a href="https://animalistesmasquefa.netlify.app/contacto" style="color: #4170E8; text-decoration: none;">✉️ Contáctanos</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Panel de Animales Masquefa{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name" style="margin: 0; padding: 0; font-size: 0.8em;">
+    <a href="{% url 'admin:index' %}" style="color: inherit; text-decoration: none;">
+      🐾 Animalistes Masquefa
+    </a>
+  </h1>
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+{% endblock %}

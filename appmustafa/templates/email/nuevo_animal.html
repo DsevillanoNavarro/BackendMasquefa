@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>🐾 Nuevo animal en adopción</title>
+  <link href="https://fonts.googleapis.com/css2?family=Afacad&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0; padding:20px; font-family:'Poppins', sans-serif; background-color:#f4f4f4;">
+  <div style="max-width: 650px; margin: auto; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+
+    <h1 style="font-family:'Afacad', sans-serif; font-size: 32px; color: #4170E8; margin-bottom: 10px;">
+      🐾 ¡Un nuevo amigo busca hogar!
+    </h1>
+
+    <p style="font-size: 17px; color: #333;">Hola <strong>{{ usuario.first_name|default:usuario.username }}</strong>,</p>
+    <p style="font-size: 17px; color: #333;">Tenemos un nuevo compañero en el refugio: <strong>{{ animal.nombre }}</strong>.</p>
+
+    <div style="margin: 30px 0; text-align: center;">
+      <a href="{{ animal_url }}">
+        <img src="cid:imagen_animal" alt="Imagen de {{ animal.nombre }}" style="width:100%; max-width:500px; border-radius: 12px;">
+      </a>
+    </div>
+
+    <div style="font-size: 15px; color: #555; line-height: 1.6;">
+      <p><strong>Edad:</strong> {{ animal.edad }} años</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ animal.fecha_nacimiento|date:"d/m/Y" }}</p>
+      <p><strong>Situación actual:</strong><br>{{ animal.situacion }}</p>
+    </div>
+
+    <div style="margin: 30px 0; text-align: center;">
+      <a href="{{ animal_url }}" style="background-color: #4170E8; color: white; padding: 15px 35px; text-decoration: none; font-weight: 900; font-size: 18px; border-radius: 8px; transition: background-color 0.3s;">
+        Quiero conocer a {{ animal.nombre }}
+      </a>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+
+    <div style="font-size: 14px; color: #777;">
+      <p><strong>¿Cómo funciona el proceso de adopción?</strong></p>
+      <ul style="padding-left: 20px;">
+        <li>📄 Envías una solicitud con tus datos y un documento PDF.</li>
+        <li>📞 Nuestro equipo se pondrá en contacto contigo para una pequeña entrevista.</li>
+        <li>🏡 Si todo va bien, {{ animal.nombre }} podría formar parte de tu familia.</li>
+      </ul>
+
+      <p style="margin-top: 25px;">Gracias por ser parte de <strong>Animalistes Masquefa</strong> y por apoyar nuestra misión de dar una segunda oportunidad a quienes más lo necesitan.</p>
+
+      <p style="text-align: center; margin-top: 30px;">
+        <a href="https://animalistesmasquefa.netlify.app/" style="color: #4170E8; text-decoration: none;">🌐 Visita nuestra web</a> | 
+        <a href="https://animalistesmasquefa.netlify.app/contacto" style="color: #4170E8; text-decoration: none;">✉️ Contáctanos</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
