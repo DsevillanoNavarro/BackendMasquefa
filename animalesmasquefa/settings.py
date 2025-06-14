@@ -206,6 +206,7 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
+CLOUDINARY_BASE_URL = "https://res.cloudinary.com/dznk2nvh5/image/upload/"
 
 # ----------------------- Correo electrónico -----------------------
 
