@@ -171,7 +171,7 @@ class CustomUser(AbstractUser):
     foto_perfil = CloudinaryField(
         'foto_perfil',
         folder='usuarios/perfiles',
-        default='default_as1n2l', 
+        default='default_wtx8r7', 
         blank=False, 
         null=False
         )
