@@ -194,13 +194,20 @@ STATIC_URL = 'static/'  # URL para archivos estáticos
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'  # Tipo de ID por defecto
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'  # URL para archivos multimedia (subidos por usuarios)
+MEDIA_ROOT = BASE_DIR / 'media'  # Ruta física para archivos multimedia
+
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+print(DEFAULT_FILE_STORAGE)
 
 # ----------------------- Correo electrónico -----------------------
 
