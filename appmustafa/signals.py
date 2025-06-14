@@ -101,16 +101,12 @@ def gestionar_estado_adopcion(sender, instance, created, **kwargs):
     animal = instance.animal
 
     imagen_url = (
-        f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
+        f"{settings.CLOUDINARY_BASE_URL}{instance.contenido.public_id}.jpg"
         if hasattr(animal.imagen, 'public_id') else
         f"{settings.CLOUDINARY_BASE_URL}${DEFAULT_IMAGEN_ANIMAL}.jpg"
     )
 
-    imagen_path = (
-        f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.jpg"
-        if hasattr(animal.imagen, 'public_id') else
-        f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_ANIMAL}.jpg"
-    )
+    imagen_path = imagen_url
 
 
     if not created and instance.aceptada == 'Aceptada':
