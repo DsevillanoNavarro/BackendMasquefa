@@ -101,15 +101,17 @@ def gestionar_estado_adopcion(sender, instance, created, **kwargs):
     animal = instance.animal
 
     imagen_url = (
-        f"{settings.BACKEND_URL}{animal.imagen.url}"
-        if hasattr(animal.imagen, 'url') else
-        f"{settings.BACKEND_URL}/media/default-cat.jpg"
+        f"{settings.CLOUDINARY_BASE_URL}{animal.imagen.public_id}.{animal.imagen.format}"
+        if hasattr(animal.imagen, 'public_id') else
+        f"{settings.CLOUDINARY_BASE_URL}${DEFAULT_IMAGEN_ANIMAL}.jpg"
     )
+
     imagen_path = (
-        animal.imagen.path
-        if hasattr(animal.imagen, 'path') else
-        "media/default-cat.jpg"
+        f"{settings.CLOUDINARY_BASE_URL}{animal.imagen.public_id}.{animal.imagen.format}"
+        if hasattr(animal.imagen, 'public_id') else
+        f"{settings.CLOUDINARY_BASE_URL}${DEFAULT_IMAGEN_ANIMAL}.jpg"
     )
+
 
     if not created and instance.aceptada == 'Aceptada':
         contexto = {
@@ -169,15 +171,11 @@ def notificar_nuevo_animal(sender, instance, created, **kwargs):
         usuarios = User.objects.filter(recibir_novedades=True)
 
         imagen_url = (
-            f"{settings.BACKEND_URL}{instance.imagen.url}"
-            if hasattr(instance.imagen, 'url') else
-            f"{settings.BACKEND_URL}/media/default-cat.jpg"
+            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.{instance.imagen.format}"
+            if hasattr(instance.imagen, 'public_id') else
+            f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_ANIMAL}.jpg"
         )
-        imagen_path = (
-            instance.imagen.path
-            if hasattr(instance.imagen, 'path') else
-            "media/default-cat.jpg"
-        )
+        imagen_path = imagen_url  # Cloudinary no usa paths locales
 
         for user in usuarios:
             contexto = {
@@ -195,21 +193,18 @@ def notificar_nuevo_animal(sender, instance, created, **kwargs):
             )
 
 
+
 @receiver(post_save, sender=Noticia)
 def notificar_nueva_noticia(sender, instance, created, **kwargs):
     if created:
         usuarios = User.objects.filter(recibir_novedades=True)
 
         imagen_url = (
-            f"{settings.BACKEND_URL}{instance.imagen.url}"
-            if hasattr(instance.imagen, 'url') else
-            f"{settings.BACKEND_URL}/media/default-news.jpg"
+            f"{settings.CLOUDINARY_BASE_URL}{instance.imagen.public_id}.{instance.imagen.format}"
+            if hasattr(instance.imagen, 'public_id') else
+            f"{settings.CLOUDINARY_BASE_URL}{DEFAULT_IMAGEN_NOTICIA}.jpg"
         )
-        imagen_path = (
-            instance.imagen.path
-            if hasattr(instance.imagen, 'path') else
-            "media/default-news.jpg"
-        )
+        imagen_path = imagen_url  # Cloudinary no usa paths locales
 
         for user in usuarios:
             contexto = {
