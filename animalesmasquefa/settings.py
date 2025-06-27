@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'drf_yasg',  # Documentación Swagger para la API
     'cloudinary',
     'cloudinary_storage',
+    
 ]
 
 # ----------------------- Middleware -----------------------
@@ -216,7 +217,9 @@ EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')  
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
+print(EMAIL_HOST_PASSWORD)
 # ----------------------- Archivos estáticos en producción -----------------------
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directorio de recolección para staticfiles

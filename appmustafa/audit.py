@@ -8,17 +8,8 @@ from .models import Animal, Noticia, Comentario, Adopcion, CustomUser
 
 # Función encargada de registrar los modelos en el sistema de auditoría
 def register_auditlog_models():
-    # Registrar el modelo Animal para que sus cambios sean auditados
-    auditlog.register(Animal)
-    
-    # Registrar el modelo Noticia para auditoría de cambios
-    auditlog.register(Noticia)
-    
-    # Registrar el modelo Comentario para rastrear sus modificaciones
+    auditlog.register(Animal, exclude_fields=['imagen'])
+    auditlog.register(Noticia, exclude_fields=['imagen'])
     auditlog.register(Comentario)
-    
-    # Registrar el modelo Adopcion para auditar cambios de estado, usuario, etc.
-    auditlog.register(Adopcion)
-    
-    # Registrar el modelo de usuario personalizado para auditar creación, edición, etc.
-    auditlog.register(CustomUser)
+    auditlog.register(Adopcion, exclude_fields=['contenido'])
+    auditlog.register(CustomUser, exclude_fields=['foto_perfil'])

@@ -179,10 +179,3 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-
-# Registro para auditoría si se utiliza auditlog
-auditlog.register(Animal, exclude_fields=['imagen'])
-auditlog.register(Noticia, exclude_fields=['imagen'])
-auditlog.register(Comentario)
-auditlog.register(Adopcion, exclude_fields=['contenido'])
-auditlog.register(CustomUser, exclude_fields=['foto_perfil'])
